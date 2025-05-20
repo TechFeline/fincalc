@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Monthly Compounding ROI Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+      background: #f4f4f4;
+    }
+    h2 {
+      text-align: center;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      font-weight: bold;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 1.1em;
+      color: #333;
+      background: #e2f2e2;
+      padding: 15px;
+      border-radius: 5px;
+    }
+    button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  font-weight: bold;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 5px;
+  box-shadow: 0 4px #388E3C;
+}
+
+button:hover {
+  background-color: #45a049;
+  transform: translateY(-1px);
+  box-shadow: 0 6px #388E3C;
+}
+
+button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px #2e7d32;
+}
+
+  </style>
+</head>
+<body>
+
+  <h2>📊 Monthly Compounding ROI Calculator</h2>
+
+  <label>Initial Amount (₹):</label>
+  <input type="number" id="initial" value="30000">
+
+  <label>Monthly Interest Rates (%):</label>
+  <input type="text" id="rates" value="5,5,5,5,5,5">
+
+  <label>Monthly Additions (₹):</label>
+  <input type="text" id="additions" value="5000,5000,5000,5000,5000,5000">
+
+  <button onclick="calculate()">Calculate</button>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    function calculate() {
+      const initial = parseFloat(document.getElementById("initial").value);
+      const rates = document.getElementById("rates").value.split(',').map(Number);
+      const additions = document.getElementById("additions").value.split(',').map(Number);
+      const resultDiv = document.getElementById("result");
+
+      if (rates.length !== additions.length) {
+        resultDiv.innerHTML = "❌ Monthly rates and additions must be of equal length.";
+        return;
+      }
+
+      let total = initial;
+      let totalInvested = initial;
+
+      try {
+        for (let i = 0; i < rates.length; i++) {
+          total *= (1 + rates[i] / 100); // Compound
+          total += additions[i];         // Add money
+          totalInvested += additions[i];
+        }
+
+        const roi = ((total - totalInvested) / totalInvested) * 100;
+        resultDiv.innerHTML =
+          `✅ Final Amount: ₹${total.toFixed(2)}<br>📈 ROI: ${roi.toFixed(2)}%`;
+      } catch (e) {
+        resultDiv.innerHTML = "❌ Invalid input.";
+      }
+    }
+  </script>
+
+</body>
+</html>
